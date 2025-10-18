@@ -1,109 +1,432 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Real-Time Validation Error</title>
-<style>
-    body {
-        background:#e9ecef;
-        font-family: Arial, sans-serif;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aesthetic Login / Registration</title>
+
+  <!-- Google font (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --card-bg: rgba(255,255,255,0.04);
+      --accent: linear-gradient(135deg,#7c5cff 0%, #3dd5f3 100%);
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.65);
+      --success: #22c55e;
+      --danger: #ef4444;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    .container {
-        background:#fff;
-        padding:30px;
-        width:320px;
-        border-radius:15px;
-        box-shadow:0 4px 20px rgba(0,0,0,0.1);
-        text-align:left;
+
+    * { box-sizing: border-box; }
+    html,body { height:100%; margin:0; background:
+      radial-gradient(800px 400px at 10% 10%, rgba(61,213,243,0.06), transparent 8%),
+      radial-gradient(700px 350px at 90% 90%, rgba(124,92,255,0.06), transparent 8%),
+      var(--bg1);
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    h2 {
-        text-align:center;
-        margin-bottom:20px;
-        font-weight:600;
+
+    .wrap {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
     }
-    .field {
-        margin-bottom:20px;
+
+    .panel {
+      width:100%;
+      max-width:920px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
     }
+
+    /* Left decorative side */
+    .panel .side {
+      padding:40px;
+      background: linear-gradient(135deg, rgba(124,92,255,0.12), rgba(61,213,243,0.06));
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .brand {
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo {
+      width:56px; height:56px; border-radius:12px;
+      background:var(--accent);
+      display:grid; place-items:center;
+      box-shadow: 0 6px 18px rgba(124,92,255,0.12);
+      font-weight:700; color:white;
+    }
+    h1 { margin:0; font-size:20px; letter-spacing:-0.2px; }
+    p.lead { margin:0; color:var(--muted); max-width:320px; line-height:1.45; }
+
+    .features {
+      margin-top:8px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .chip {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.04);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color: #dfe9f6;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* Right form area */
+    .form-area {
+      padding:28px 36px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .toggle {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .toggle .tabs {
+      display:flex;
+      gap:8px;
+      background: rgba(255,255,255,0.02);
+      padding:6px;
+      border-radius:999px;
+    }
+    .tab {
+      padding:8px 16px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:600;
+      color: rgba(255,255,255,0.75);
+      transition: all 220ms cubic-bezier(.2,.9,.3,1);
+    }
+    .tab.active {
+      background:var(--accent);
+      color:#081126;
+      box-shadow: 0 8px 30px rgba(15,23,36,0.45);
+      transform:translateY(-2px);
+    }
+
+    form {
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .row {
+      display:flex;
+      gap:12px;
+    }
+    .col { flex:1; }
+
     label {
-        display:block;
-        margin-bottom:6px;
-        font-weight:bold;
+      font-size:13px;
+      color:var(--muted);
+      display:block;
+      margin-bottom:6px;
     }
     input[type="text"],
     input[type="email"],
-    input[type="password"] {
-        width:100%;
-        padding:10px;
-        border:1px solid #ccc;
-        border-radius:6px;
-        font-size:14px;
+    input[type="password"],
+    input[type="tel"] {
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      color:inherit;
+      outline:none;
+      transition: box-shadow 160ms;
     }
+    input:focus {
+      box-shadow: 0 6px 22px rgba(61,213,243,0.06);
+      border-color: rgba(61,213,243,0.22);
+    }
+
+    .small {
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    .btn {
+      display:inline-grid;
+      place-items:center;
+      padding:12px 16px;
+      border-radius:12px;
+      border: none;
+      cursor:pointer;
+      font-weight:700;
+      font-size:15px;
+    }
+    .btn.primary {
+      background:var(--accent);
+      color:#081126;
+      box-shadow: 0 12px 30px rgba(124,92,255,0.12);
+    }
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+    }
+
+    .helper {
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* validation messages */
     .error {
-        margin-top:6px;
-        font-size:13px;
-        color:#d8000c;
-        background:#ffd2d2;
-        padding:6px 8px;
-        border-radius:5px;
-        display:flex;
-        align-items:center;
-        gap:6px;
+      color: var(--danger);
+      font-size:13px;
     }
-    .error-icon {
-        background:#d8000c;
-        color:white;
-        border-radius:50%;
-        width:18px;
-        height:18px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:12px;
-        font-weight:bold;
+    .success {
+      color: var(--success);
+      font-size:13px;
     }
-    button {
-        width:100%;
-        padding:12px;
-        background:#000;
-        color:#fff;
-        border:none;
-        border-radius:8px;
-        font-size:16px;
-        cursor:pointer;
+
+    .socials {
+      display:flex;
+      gap:10px;
+      margin-top:6px;
     }
-    button:hover {
-        background:#333;
+    .social {
+      flex:1;
+      padding:10px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-weight:600;
     }
-</style>
+
+    footer.note {
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* small screens */
+    @media (max-width:880px){
+      .panel { grid-template-columns: 1fr; }
+      .side { order:2; padding:20px; text-align:center; align-items:center; }
+      .form-area { order:1; padding:20px; }
+      .panel { border-radius:14px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Real-Time Validation Error</h2>
 
-        <div class="field">
-            <label>Name</label>
-            <input type="text" placeholder="Enter your full name"/>
-            <div class="error"><span class="error-icon">!</span>Please enter your full name</div>
+<div class="wrap">
+  <div class="panel" role="region" aria-label="Authentication panel">
+    <div class="side" aria-hidden="false">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Atlas — Auth</h1>
+          <p class="lead">Beautiful, simple login & registration UI — accessible and responsive. Ready to plug into your project.</p>
         </div>
+      </div>
 
-        <div class="field">
-            <label>Email</label>
-            <input type="email" placeholder="Enter your email"/>
-            <div class="error"><span class="error-icon">!</span>Invalid email address format</div>
-        </div>
+      <div class="features" aria-hidden="true">
+        <div class="chip">Responsive</div>
+        <div class="chip">Client validation</div>
+        <div class="chip">Accessible</div>
+        <div class="chip">No dependencies</div>
+      </div>
 
-        <div class="field">
-            <label>Password</label>
-            <input type="password" placeholder="Enter password"/>
-            <div class="error"><span class="error-icon">!</span>Password must be at least 8 characters and include a number and a symbol</div>
-        </div>
-
-        <button>Register</button>
+      <p class="helper" style="margin-top:16px;">Use the tabs to switch between Login & Register. Forms include friendly validation and subtle animations.</p>
     </div>
+
+    <div class="form-area">
+      <div class="toggle" role="tablist" aria-label="Login or register">
+        <div class="tabs" id="tabs">
+          <div class="tab active" data-target="login" role="tab" aria-selected="true">Login</div>
+          <div class="tab" data-target="register" role="tab" aria-selected="false">Register</div>
+        </div>
+        <div class="helper">Secure · Fast</div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login" class="active-form" autocomplete="on" aria-label="Login form">
+        <label for="li-email">Email</label>
+        <input id="li-email" type="email" placeholder="name@example.com" required />
+        <label for="li-pass">Password</label>
+        <input id="li-pass" type="password" placeholder="••••••••" required minlength="6" />
+
+        <div class="small">
+          <label style="display:flex;align-items:center;gap:8px;">
+            <input id="remember" type="checkbox" /> <span style="font-size:13px;color:var(--muted)">Remember me</span>
+          </label>
+          <a href="#" id="forgot" class="helper" style="text-decoration:none;color:var(--muted)">Forgot?</a>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:8px;">
+          <button type="button" class="btn ghost" onclick="demoSocial('google')">Continue with Google</button>
+          <button type="submit" class="btn primary">Sign in</button>
+        </div>
+
+        <div id="login-msg" aria-live="polite"></div>
+        <p class="note">Don't have an account? <strong style="color:#fff">Register</strong> in the tab.</p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register" style="display:none;" autocomplete="on" aria-label="Registration form">
+        <div class="row">
+          <div class="col">
+            <label for="r-first">First name</label>
+            <input id="r-first" type="text" placeholder="Anu" required minlength="2" />
+          </div>
+          <div class="col">
+            <label for="r-last">Last name</label>
+            <input id="r-last" type="text" placeholder="Kumar" required minlength="2" />
+          </div>
+        </div>
+
+        <label for="r-email">Email</label>
+        <input id="r-email" type="email" placeholder="you@mail.com" required />
+
+        <label for="r-phone">Phone (optional)</label>
+        <input id="r-phone" type="tel" placeholder="+91 98765 43210" pattern="[\d+\s\-()]{6,}" />
+
+        <div class="row">
+          <div class="col">
+            <label for="r-pass">Password</label>
+            <input id="r-pass" type="password" placeholder="At least 6 characters" required minlength="6" />
+          </div>
+          <div class="col">
+            <label for="r-pass2">Confirm</label>
+            <input id="r-pass2" type="password" placeholder="Repeat password" required minlength="6" />
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button type="button" class="btn ghost" onclick="demoSocial('facebook')">Continue with Facebook</button>
+          <button type="submit" class="btn primary">Create account</button>
+        </div>
+
+        <div id="reg-msg" aria-live="polite"></div>
+
+        <p class="note">By signing up you agree to our <a href="#" style="color:inherit;opacity:0.9">Terms</a> and <a href="#" style="color:inherit;opacity:0.9">Privacy</a>.</p>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching logic
+  const tabs = document.querySelectorAll('.tab');
+  const loginForm = document.getElementById('login');
+  const regForm = document.getElementById('register');
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+
+      if (t.dataset.target === 'login') {
+        loginForm.style.display = '';
+        regForm.style.display = 'none';
+        t.setAttribute('aria-selected','true');
+      } else {
+        loginForm.style.display = 'none';
+        regForm.style.display = '';
+        t.setAttribute('aria-selected','true');
+      }
+    });
+  });
+
+  // Simple client-side validation + demo behavior
+  function showMessage(el, msg, type='error') {
+    el.innerHTML = '<div class="'+(type==='error'?'error':'success')+'">' + msg + '</div>';
+    setTimeout(()=>{ el.innerHTML = ''; }, 5000);
+  }
+
+  // Login submission
+  document.getElementById('login').addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('li-email').value.trim();
+    const pass = document.getElementById('li-pass').value;
+
+    // basic checks
+    if (!email) { showMessage(document.getElementById('login-msg'),'Enter your email'); return; }
+    if (pass.length < 6) { showMessage(document.getElementById('login-msg'),'Password must be at least 6 characters'); return; }
+
+    // Demo: "successful" login if email contains "@"
+    if (email.includes('@')) {
+      showMessage(document.getElementById('login-msg'),'Signed in successfully — redirecting...', 'success');
+      // In real app: send to server here. We simulate success.
+    } else {
+      showMessage(document.getElementById('login-msg'),'Please use a valid email address');
+    }
+  });
+
+  // Register submission
+  document.getElementById('register').addEventListener('submit', function(e){
+    e.preventDefault();
+    const fn = document.getElementById('r-first').value.trim();
+    const ln = document.getElementById('r-last').value.trim();
+    const email = document.getElementById('r-email').value.trim();
+    const p1 = document.getElementById('r-pass').value;
+    const p2 = document.getElementById('r-pass2').value;
+
+    if (!fn || !ln) { showMessage(document.getElementById('reg-msg'),'Please enter full name'); return; }
+    if (!email.includes('@')) { showMessage(document.getElementById('reg-msg'),'Please enter a valid email'); return; }
+    if (p1.length < 6) { showMessage(document.getElementById('reg-msg'),'Password must be at least 6 characters'); return; }
+    if (p1 !== p2) { showMessage(document.getElementById('reg-msg'),'Passwords do not match'); return; }
+
+    showMessage(document.getElementById('reg-msg'),'Account created — welcome!','success');
+    // Reset fields (demo)
+    this.reset();
+    // Optionally switch to login tab
+    tabs[0].click();
+  });
+
+  // Social demo
+  function demoSocial(provider){
+    alert('This demo does not connect to '+provider+'. Replace with real OAuth flow.');
+  }
+
+  // Accessibility: allow Enter to submit while focusing on inputs (browser default).
+  // Small enhancement: pressing Esc will clear messages.
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      document.getElementById('login-msg').innerHTML = '';
+      document.getElementById('reg-msg').innerHTML = '';
+    }
+  });
+</script>
 </body>
-          </html>
+    </html>
