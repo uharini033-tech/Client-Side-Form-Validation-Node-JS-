@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Real-Time Validation Error</title>
+<style>
+    body {
+        background:#e9ecef;
+        font-family: Arial, sans-serif;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+    }
+    .container {
+        background:#fff;
+        padding:30px;
+        width:320px;
+        border-radius:15px;
+        box-shadow:0 4px 20px rgba(0,0,0,0.1);
+        text-align:left;
+    }
+    h2 {
+        text-align:center;
+        margin-bottom:20px;
+        font-weight:600;
+    }
+    .field {
+        margin-bottom:20px;
+    }
+    label {
+        display:block;
+        margin-bottom:6px;
+        font-weight:bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width:100%;
+        padding:10px;
+        border:1px solid #ccc;
+        border-radius:6px;
+        font-size:14px;
+    }
+    .error {
+        margin-top:6px;
+        font-size:13px;
+        color:#d8000c;
+        background:#ffd2d2;
+        padding:6px 8px;
+        border-radius:5px;
+        display:flex;
+        align-items:center;
+        gap:6px;
+    }
+    .error-icon {
+        background:#d8000c;
+        color:white;
+        border-radius:50%;
+        width:18px;
+        height:18px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:12px;
+        font-weight:bold;
+    }
+    button {
+        width:100%;
+        padding:12px;
+        background:#000;
+        color:#fff;
+        border:none;
+        border-radius:8px;
+        font-size:16px;
+        cursor:pointer;
+    }
+    button:hover {
+        background:#333;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Real-Time Validation Error</h2>
+
+        <div class="field">
+            <label>Name</label>
+            <input type="text" placeholder="Enter your full name"/>
+            <div class="error"><span class="error-icon">!</span>Please enter your full name</div>
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email"/>
+            <div class="error"><span class="error-icon">!</span>Invalid email address format</div>
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input type="password" placeholder="Enter password"/>
+            <div class="error"><span class="error-icon">!</span>Password must be at least 8 characters and include a number and a symbol</div>
+        </div>
+
+        <button>Register</button>
+    </div>
+</body>
+          </html>
